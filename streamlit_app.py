@@ -4,11 +4,6 @@ from snowflake.snowpark.functions import col
 import requests
 
 
-fruityvice_response = requests.get("https://fruityvice.com/api/fruit/watermelon")
-st.text(fruityvice_response)
-# it place data inside container space
-st.data_frame(data=fruityvice_response.json(), use_container_width=True)
-
 # Write directly to the app
 st.title(":cup_with_straw: Customize Your Smoothie! :cup_with_straw:")
 st.write(
@@ -36,7 +31,10 @@ if ingredients_list:
     ingredients_string = ''
     for fruit in ingredients_list:
         ingredients_string += fruit + ' '
-
+        st.subheader(fruit + ' Nutrition Information')
+        fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + fruit)
+        fv_df = st.data_frame(data=fruityvice_response.json(), use_container_width=True)
+        
     # st.write(ingredients_string)
     
     my_insert_stmt = """ 
